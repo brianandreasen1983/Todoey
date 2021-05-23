@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 class TodoListViewController: UITableViewController {
 
@@ -16,6 +17,7 @@ class TodoListViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadItems()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -33,16 +35,15 @@ class TodoListViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        itemArray[indexPath.row].done = !itemArray[indexPath.row].done
-        
-        if itemArray[indexPath.row].done == false {
-            itemArray[indexPath.row].done = true
-        } else {
-            itemArray[indexPath.row].done = false
-        }
-        
-        tableView.reloadData()
+        context.delete(itemArray[indexPath.row])
+        itemArray.remove(at: indexPath.row)
+
+
+//        itemArray[indexPath.row].done = !itemArray[indexPath.row].done
+
+        saveItems()
         tableView.deselectRow(at: indexPath, animated: true)
+        self.tableView.reloadData()
     }
     
     
@@ -80,8 +81,15 @@ class TodoListViewController: UITableViewController {
         }
     }
     
+    // MARK -- Need to be able to load the items from core data to display in the UI.
     func loadItems() {
-        // MARK -- Need to be able to load the items from core data to display in the UI.
+        let request : NSFetchRequest<Item> = Item.fetchRequest()
+        do {
+            // Get everything back and save the results in the item Array
+           itemArray =  try context.fetch(request)
+        } catch  {
+            print("Error fetching data from context \(error)")
+        }
     }
 }
 
