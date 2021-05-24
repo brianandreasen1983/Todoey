@@ -82,14 +82,42 @@ class TodoListViewController: UITableViewController {
     }
     
     // MARK -- Need to be able to load the items from core data to display in the UI.
-    func loadItems() {
-        let request : NSFetchRequest<Item> = Item.fetchRequest()
+    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()) {
         do {
             // Get everything back and save the results in the item Array
            itemArray =  try context.fetch(request)
         } catch  {
             print("Error fetching data from context \(error)")
         }
+        
+        tableView.reloadData()
     }
 }
 
+// MARK -- Search bar methods
+extension TodoListViewController : UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        // MARK -- TODO: Query the database.
+        let request : NSFetchRequest<Item> = Item.fetchRequest()
+    
+        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        request.predicate = predicate
+        
+        let sortDescriptor  = NSSortDescriptor(key: "title", ascending: true)
+        request.sortDescriptors = [sortDescriptor]
+        
+        loadItems(with: request)
+        
+        tableView.reloadData()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            loadItems()
+            
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+        }
+    }
+}
