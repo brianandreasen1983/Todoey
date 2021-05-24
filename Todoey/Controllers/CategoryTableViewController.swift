@@ -11,6 +11,7 @@ import CoreData
 class CategoryTableViewController: UITableViewController {
     // MARK -- Instances of Category are not being created properly
     var categories = [Category]()
+    let categoryCell = "CategoryCell"
     let goToItems = "goToItems"
     let context = (UIApplication.shared.delegate as!  AppDelegate).persistentContainer.viewContext
 
@@ -22,12 +23,11 @@ class CategoryTableViewController: UITableViewController {
 
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return categories.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: categoryCell, for: indexPath)
         let item = categories[indexPath.row]
         
         cell.textLabel?.text = item.name
@@ -87,10 +87,8 @@ class CategoryTableViewController: UITableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationVC = segue.destination as! TodoListViewController
-        if let indexPath = tableView.indexPathForSelectedRow {
+        if let indexPath = tableView.indexPathForSelectedRow {	
             destinationVC.selectedCategory = categories[indexPath.row]
         }
-    }
-    
-    // MARK -- Data Manipulation Methods
+    }    
 }

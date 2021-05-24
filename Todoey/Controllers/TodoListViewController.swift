@@ -43,9 +43,6 @@ class TodoListViewController: UITableViewController {
         context.delete(itemArray[indexPath.row])
         itemArray.remove(at: indexPath.row)
 
-
-//        itemArray[indexPath.row].done = !itemArray[indexPath.row].done
-
         saveItems()
         tableView.deselectRow(at: indexPath, animated: true)
         self.tableView.reloadData()
@@ -111,7 +108,6 @@ class TodoListViewController: UITableViewController {
 // MARK -- Search bar methods
 extension TodoListViewController : UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        // MARK -- TODO: Query the database.
         let request : NSFetchRequest<Item> = Item.fetchRequest()
     
         let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
