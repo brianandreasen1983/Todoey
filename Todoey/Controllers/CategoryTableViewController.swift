@@ -11,6 +11,7 @@ import CoreData
 class CategoryTableViewController: UITableViewController {
     // MARK -- Instances of Category are not being created properly
     var categories = [Category]()
+    let goToItems = "goToItems"
     let context = (UIApplication.shared.delegate as!  AppDelegate).persistentContainer.viewContext
 
     
@@ -80,6 +81,16 @@ class CategoryTableViewController: UITableViewController {
     }
     
     // MARK -- Tableview Delegate methods
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: goToItems, sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationVC = segue.destination as! TodoListViewController
+        if let indexPath = tableView.indexPathForSelectedRow {
+            destinationVC.selectedCategory = categories[indexPath.row]
+        }
+    }
     
     // MARK -- Data Manipulation Methods
 }

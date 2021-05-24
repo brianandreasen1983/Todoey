@@ -81,7 +81,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <segue destination="CSH-U1-KoP" kind="show" identifier="goToitems" id="8P8-Eh-Sor"/>
+                        <segue destination="CSH-U1-KoP" kind="show" identifier="goToItems" id="8P8-Eh-Sor"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UNk-jU-R4U" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
